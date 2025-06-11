@@ -1,6 +1,7 @@
 import os
 import json
 import base64
+import logging
 import re
 from openai import OpenAI
 
@@ -9,6 +10,8 @@ client = OpenAI(
     api_key="sk-7312141a7efd48f3acbd3957aecf8390",
     base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
 )
+
+logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.INFO)
 
 def base_encode(path):
     with open(path, "rb") as image_file:
@@ -44,7 +47,7 @@ def get_img_json(path_1, path_2):
     fixed_json = json_part.replace('\n', '')  # 地址字段保留换行语义
     data = json.loads(fixed_json)
 
-    print(data)
+    logging.info(data)
     return data
 
 
