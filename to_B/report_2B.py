@@ -11,11 +11,10 @@ from openai import OpenAI
 
 logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.INFO)
 
-client = ZhipuAI(api_key="04ac6f4a2fa34264acc3b0c1ac691d97.sCXt5ScbILJOyLmf")  # 请填写您自己的APIKey
+client = ZhipuAI(api_key=os.getenv("ZHIPU_API_KEY"))
 
 client_Q = OpenAI(
-    # 若没有配置环境变量，请用百炼API Key将下行替换为：api_key="sk-xxx",
-    api_key="sk-8f0775132fdc4a5db3bbfeb335ac8452",
+    api_key=os.getenv("DASHSCOPE_API_KEY"),
     base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
 )
 

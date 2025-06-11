@@ -143,10 +143,22 @@ class MainWindow(QMainWindow):
         splitter.addWidget(right)
         splitter.setStretchFactor(0,3)
 
-        db_cfg = dict(host="localhost", user="root", password="31161737",
-                      database="Fruit", port=3306, charset="utf8mb4", autocommit=False)
-        email_cfg = dict(host="smtp.163.com", port=465, username="FreshNIR@163.com",
-                         password="WUbMZ39ACqzXhQnK", use_ssl=True)
+        db_cfg = dict(
+            host=os.getenv("DB_HOST", "localhost"),
+            user=os.getenv("DB_USER", "root"),
+            password=os.getenv("DB_PASSWORD", ""),
+            database=os.getenv("DB_NAME", "Fruit"),
+            port=int(os.getenv("DB_PORT", "3306")),
+            charset=os.getenv("DB_CHARSET", "utf8mb4"),
+            autocommit=False,
+        )
+        email_cfg = dict(
+            host=os.getenv("EMAIL_HOST", "smtp.163.com"),
+            port=int(os.getenv("EMAIL_PORT", "465")),
+            username=os.getenv("EMAIL_USERNAME", "FreshNIR@163.com"),
+            password=os.getenv("EMAIL_PASSWORD", ""),
+            use_ssl=bool(int(os.getenv("EMAIL_USE_SSL", "1"))),
+        )
         self.agent = FruitAgent("成都", db_cfg, email_cfg)
         self.agent.enhanced_retrieval = False
         self.agent.output_signal.connect(lambda text: self.add_message("agent", text))

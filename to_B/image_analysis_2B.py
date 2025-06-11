@@ -9,9 +9,8 @@ from openai import OpenAI
 logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.INFO)
 
 client = OpenAI(
-    # 若没有配置环境变量，可用百炼API Key将下行替换为：api_key="sk-xxx"。但不建议在生产环境中直接将API Key硬编码到代码中，以减少API Key泄露风险。
-    api_key="sk-7312141a7efd48f3acbd3957aecf8390",
-    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",  # 百炼服务的base_url
+    api_key=os.getenv("DASHSCOPE_API_KEY"),
+    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
 )
 
 
@@ -249,3 +248,4 @@ def get_img_jsonl(dir_path, category):
 
     logging.info(data_list)
     return data_list
+

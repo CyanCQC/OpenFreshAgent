@@ -60,7 +60,9 @@ def upload_file_and_get_url(api_key, model_name, file_path):
 
 
 # 使用示例
-def get_url(file_path, api_key="sk-8f0775132fdc4a5db3bbfeb335ac8452", model_name="qwen-vl-plus"):
+def get_url(file_path, api_key=None, model_name="qwen-vl-plus"):
+    if api_key is None:
+        api_key = os.getenv("DASHSCOPE_API_KEY")
 
     public_url = upload_file_and_get_url(api_key, model_name, file_path)
     expire_time = datetime.now() + timedelta(hours=48)
