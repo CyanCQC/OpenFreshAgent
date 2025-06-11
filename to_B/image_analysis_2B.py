@@ -1,9 +1,12 @@
 import csv
 import json
-from pathlib import Path
-from openai import OpenAI
+import logging
 import os
 import base64
+from pathlib import Path
+from openai import OpenAI
+
+logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.INFO)
 
 client = OpenAI(
     # 若没有配置环境变量，可用百炼API Key将下行替换为：api_key="sk-xxx"。但不建议在生产环境中直接将API Key硬编码到代码中，以减少API Key泄露风险。
@@ -64,7 +67,7 @@ def extract_json_list(filename):
     with open(f"{filename}.jsonl", 'r') as f:
         for line in f:
             # 解析基础数据
-            print(line)
+            logging.debug(line)
             entry = json.loads(line)
             content_str = entry.get("response", {}).get("body", {}).get("choices", [{}])[0].get("message", {}).get(
                 "content", "")
@@ -130,7 +133,7 @@ def task_create(file_path):
         endpoint="/v1/chat/completions",  # 大语言模型固定填写，/v1/chat/completions，embedding文本向量模型填写"/v1/embeddings"
         completion_window="24h"
     )
-    print(batch)
+    logging.info(batch)
 
     return batch.id
 
@@ -142,12 +145,12 @@ def task_query(file_id):
 
 def task_cancel(file_id):
     batch = client.batches.retrieve(file_id)  # 将batch_id替换为Batch任务的id
-    print(batch)
+    logging.info(batch)
 
 
 def task_result(file_id):
     content = client.files.content(file_id=file_id)
-    print(content.text)
+    logging.info(content.text)
     content.write_to_file(f"{file_id}.jsonl")
 
 
@@ -180,13 +183,13 @@ def create_image_task(dir_path, output_csv, category):
 def query_and_get_result(file_id):
     batch = task_query(file_id)
     if batch.status == "completed":
-        print(f"Completed! File was saved to {file_id}.csv")
+        logging.info(f"Completed! File was saved to {file_id}.csv")
         return result_generate(f"{file_id}")
     elif batch.status == "failed":
-        print("Task Failed. Cancelling...")
+        logging.error("Task Failed. Cancelling...")
         task_cancel(file_id)
     elif batch.status == "in_progress":
-        print("Processing...")
+        logging.info("Processing...")
 
 
 def base_encode(path):
@@ -199,7 +202,7 @@ def get_img_jsonl(dir_path, category):
     filenames = os.listdir(img_path)
     data_list = []
     for filename in filenames:
-        print(f"### 正在分析 {filename}...")
+        logging.info(f"### 正在分析 {filename}...")
         path = os.path.join(img_path, filename)
         prompt = "直接输出图中水果的种类。不要有任何多余输出。"
         red_url = base_encode(path)
@@ -239,10 +242,10 @@ def get_img_jsonl(dir_path, category):
         fixed_json = json_part.replace('\n', '')  # 地址字段保留换行语义
         # print(f"FIXED-JSON: {fixed_json}")
 
-        print(f"< {filename} > 外观分析结果：\n {fixed_json}")
+        logging.info(f"< {filename} > 外观分析结果：\n {fixed_json}")
         data = json.loads(fixed_json)
 
         data_list.append((filename, data))
 
-    print(data_list)
+    logging.info(data_list)
     return data_list

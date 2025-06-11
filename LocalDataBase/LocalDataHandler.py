@@ -1,4 +1,5 @@
 import os
+import logging
 import numpy as np
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import pymysql
@@ -6,6 +7,8 @@ from pdfminer.high_level import extract_text
 from pymysql.constants import CLIENT
 import dashscope
 from Agent.Handlers.DBHandler import DBHandler
+
+logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.INFO)
 
 # 通义千问API配置
 dashscope.api_key = "sk-8f0775132fdc4a5db3bbfeb335ac8452"  # 替换为你的实际API密钥
@@ -28,7 +31,7 @@ class LocalDataHandler:
         注意：同名文件更新情况未作处理
         """
         filenames = os.listdir(dir_path)
-        print(filenames)
+        logging.debug(filenames)
         # print(self._get_existed_files())
         # 注意：此处根据你数据库返回字典的键名进行调整，此处示例中使用的是 'TABLE_NAME'
         existed = [f['file_name'] for f in self._get_existed_files()]
@@ -37,7 +40,7 @@ class LocalDataHandler:
             if filename.endswith('.pdf') and filename not in existed:
                 self._upload_file(os.path.join(dir_path, filename))
             else:
-                print(f"{filename} 已检测到")
+                logging.info(f"{filename} 已检测到")
 
     def _upload_file(self, file_path):
         """
@@ -87,10 +90,10 @@ class LocalDataHandler:
                     )
                     if row_count != 1:
                         raise RuntimeError(f"插入失败，影响行数为 {row_count}")
-                print(f"文件 {file_name} 的嵌入已保存到数据库。")
+                    logging.info(f"文件 {file_name} 的嵌入已保存到数据库。")
                 self.DBHandler.commit()
             except RuntimeError as e:
-                print(f"保存文件 {file_name} 时出错: {e}")
+                logging.error(f"保存文件 {file_name} 时出错: {e}")
                 raise
 
     def _get_embedding(self, text):
@@ -107,7 +110,7 @@ class LocalDataHandler:
             else:
                 raise Exception(f"API 调用失败: {response.status_code}, {response.message}")
         except Exception as e:
-            print(f"错误: {e}")
+            logging.error(f"错误: {e}")
             raise
 
     def cosine_similarity(self, vec1, vec2):

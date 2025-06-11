@@ -4,9 +4,12 @@ import os
 from Agent.spectrum.SpectrumProcess import get_spectrum_dict
 from .image_analysis_2B import create_image_task, query_and_get_result, get_img_jsonl
 import re
-from zhipuai import ZhipuAI
 import time
+import logging
+from zhipuai import ZhipuAI
 from openai import OpenAI
+
+logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.INFO)
 
 client = ZhipuAI(api_key="04ac6f4a2fa34264acc3b0c1ac691d97.sCXt5ScbILJOyLmf")  # 请填写您自己的APIKey
 
@@ -36,7 +39,7 @@ def execute_agent_task(dir_path, output_csv, category):
         result = query_and_get_result(task_id)
 
         if result and result.get("status") == "completed":
-            print("end")
+            logging.info("end")
             return result
 
         time.sleep(10)
@@ -54,7 +57,7 @@ def merge_json(json1: dict, json2: dict) -> dict:
     :param json2: 第二个字典对象
     :return: 合并后的新字典
     """
-    print(json1, json2)
+    logging.debug("Merge JSON: %s %s", json1, json2)
     return {**json1, **json2}
 
 def get_report_prompt(user_role):
@@ -120,7 +123,7 @@ def construct_structured_data(dir_path, category, reasoner=False):
             ],
             stream=False
         )
-    print(response.choices[0].message.content)
+    logging.info(response.choices[0].message.content)
     return response.choices[0].message.content
 
 
