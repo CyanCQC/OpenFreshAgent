@@ -1,4 +1,9 @@
+# 🥬 FreshAgent Alpha
+
+---
+
 ![logo.png](figs/logo.png)
+
 ## 🍎 FreshAgent
 FreshAgent 是**电子科技大学旸谷青年科创中心“鲜”而易见团队**开发的一款**智慧农业**领域，执行**产业级批量果蔬检测**的智能体，旨在帮助不具备果蔬检测全栈能力（操作设备、录入数据、知识检索、报告汇总）的操作人员通过自然语言完成专业级的果蔬检测任务。
 
@@ -55,6 +60,8 @@ FreshAgent Alpha 提供对本地知识库的原生支持。用户可以通过在
 ![Retrieval.png](figs/Retrieval.png)
 
 ## ⚙ 环境配置
+
+1. 依赖安装
 ```commandline
   pip install \
   markdown \
@@ -75,6 +82,18 @@ FreshAgent Alpha 提供对本地知识库的原生支持。用户可以通过在
   pyserial \
 ```
 
+2. 环境变量
+
+以下环境变量在运行前需根据实际情况进行配置：
+
+- `ZHIPU_API_KEY`：智谱清言 API 密钥
+- `DASHSCOPE_API_KEY`：通义千问 API 密钥
+- `DEEPSEEK_API_KEY`：DeepSeek API 密钥
+- `DB_HOST`、`DB_USER`、`DB_PASSWORD`、`DB_NAME`、`DB_PORT`、`DB_CHARSET`：数据库连接信息
+- `EMAIL_HOST`、`EMAIL_PORT`、`EMAIL_USERNAME`、`EMAIL_PASSWORD`、`EMAIL_USE_SSL`：邮件服务配置
+- `AGENT_LOCATION`：报告中使用的地理位置
+
+可在终端通过 `export` 或在 `.env` 文件中设置上述变量。
 
 ## 🚀 快速开始
 
