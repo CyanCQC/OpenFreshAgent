@@ -11,7 +11,7 @@ from Agent.Handlers.DBHandler import DBHandler
 logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.INFO)
 
 # 通义千问API配置
-dashscope.api_key = "sk-8f0775132fdc4a5db3bbfeb335ac8452"  # 替换为你的实际API密钥
+dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
 EMBEDDING_ENDPOINT = "https://api.tongyi.com/embeddings"  # 假设端点，需根据API文档调整
 
 
@@ -170,14 +170,15 @@ class LocalDataHandler:
 
 if __name__ == '__main__':
     db_config = {
-        "host": "localhost",
-        "user": "root",
-        "password": "31161737",
-        "database": "LocalKnowledge",
-        "port": 3306,
-        "charset": "utf8mb4",
-        "autocommit": False
+        "host": os.getenv("DB_HOST", "localhost"),
+        "user": os.getenv("DB_USER", "root"),
+        "password": os.getenv("DB_PASSWORD", ""),
+        "database": os.getenv("DB_NAME", "LocalKnowledge"),
+        "port": int(os.getenv("DB_PORT", "3306")),
+        "charset": os.getenv("DB_CHARSET", "utf8mb4"),
+        "autocommit": False,
     }
 
     LocalHandler = LocalDataHandler(db_config)
     LocalHandler.check_dir('./')
+

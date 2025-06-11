@@ -6,8 +6,7 @@ import re
 from openai import OpenAI
 
 client = OpenAI(
-    # api_key=os.getenv("DASHSCOPE_API_KEY"),
-    api_key="sk-7312141a7efd48f3acbd3957aecf8390",
+    api_key=os.getenv("DASHSCOPE_API_KEY"),
     base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
 )
 
@@ -129,3 +128,4 @@ def get_nir_prompt(category):
 if __name__ == '__main__':
 
     get_img_json("C:/Users/Cyan/Desktop/010-02-0.jpg", "C:/Users/Cyan/Desktop/010-02-1.jpg")
+

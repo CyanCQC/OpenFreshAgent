@@ -3,12 +3,12 @@ from image_analysis_2C import get_img_json
 # from spectrum import get_spectrum_json
 
 import logging
+import os
 from openai import OpenAI
 
-client = OpenAI(api_key="sk-cbc2c57b67fd4490beb8341b796967a9", base_url="https://api.deepseek.com")
+client = OpenAI(api_key=os.getenv("DEEPSEEK_API_KEY"), base_url="https://api.deepseek.com")
 client_Q = OpenAI(
-    # 若没有配置环境变量，请用百炼API Key将下行替换为：api_key="sk-xxx",
-    api_key="sk-8f0775132fdc4a5db3bbfeb335ac8452",
+    api_key=os.getenv("DASHSCOPE_API_KEY"),
     base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
 )
 
@@ -108,3 +108,4 @@ if __name__ == '__main__':
             "C:/Users/Cyan/Desktop/010-02-1.jpg",
         )
     )
+
