@@ -18,10 +18,10 @@ import json
 from openai import OpenAI
 from PyQt5.QtCore import QObject, pyqtSignal
 
-client = ZhipuAI(api_key="04ac6f4a2fa34264acc3b0c1ac691d97.sCXt5ScbILJOyLmf")
+client = ZhipuAI(api_key=os.getenv("ZHIPU_API_KEY"))
 
 client_Q = OpenAI(
-    api_key="sk-8f0775132fdc4a5db3bbfeb335ac8452",
+    api_key=os.getenv("DASHSCOPE_API_KEY"),
     base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
 )
 
@@ -39,6 +39,10 @@ class FruitAgent(QObject):
         self.memory = []
         self.scheduler = BlockingScheduler()
         self.enhanced_retrieval = True
+
+    def set_enhanced_retrieval(self, enabled: bool) -> None:
+        """Allow external control of retrieval behavior."""
+        self.enhanced_retrieval = enabled
 
     def analyze(self):
         tpl_prompt = """
@@ -740,22 +744,22 @@ class FruitAgent(QObject):
 
 if __name__ == '__main__':
     db_config = {
-        "host": "localhost",
-        "user": "root",
-        "password": "31161737",
-        "database": "Fruit",
-        "port": 3306,
-        "charset": "utf8mb4",
-        "autocommit": False
+        "host": os.getenv("DB_HOST", "localhost"),
+        "user": os.getenv("DB_USER", "root"),
+        "password": os.getenv("DB_PASSWORD", ""),
+        "database": os.getenv("DB_NAME", "Fruit"),
+        "port": int(os.getenv("DB_PORT", "3306")),
+        "charset": os.getenv("DB_CHARSET", "utf8mb4"),
+        "autocommit": False,
     }
     email_config = {
-        "host": "smtp.163.com",
-        "port": 465,
-        "username": "FreshNIR@163.com",
-        "password": "WUbMZ39ACqzXhQnK",
-        "use_ssl": True
+        "host": os.getenv("EMAIL_HOST", "smtp.163.com"),
+        "port": int(os.getenv("EMAIL_PORT", "465")),
+        "username": os.getenv("EMAIL_USERNAME", "FreshNIR@163.com"),
+        "password": os.getenv("EMAIL_PASSWORD", ""),
+        "use_ssl": bool(int(os.getenv("EMAIL_USE_SSL", "1"))),
     }
-    agent = FruitAgent("成都市", db_config, email_config)
+    agent = FruitAgent(os.getenv("AGENT_LOCATION", "成都市"), db_config, email_config)
     while True:
         user_input = input("==> 用户: ")
         agent.turn(user_input)
