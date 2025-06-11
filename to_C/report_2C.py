@@ -3,7 +3,6 @@ from image_analysis_2C import get_img_json
 # from spectrum import get_spectrum_json
 
 import logging
-import os
 from openai import OpenAI
 
 client = OpenAI(api_key=os.getenv("DEEPSEEK_API_KEY"), base_url="https://api.deepseek.com")

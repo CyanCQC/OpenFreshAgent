@@ -1,3 +1,4 @@
+
 import os
 import tempfile
 import logging
@@ -75,7 +76,6 @@ def api_image():
 
     os.remove(path)
     return jsonify({'outputs': outputs})
-
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000)

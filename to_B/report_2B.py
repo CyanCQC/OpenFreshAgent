@@ -129,4 +129,3 @@ def construct_structured_data(dir_path, category, reasoner=False):
 
 if __name__ == '__main__':
     construct_structured_data("C:/Users/Cyan/Desktop/images", "砂糖桔")
-
