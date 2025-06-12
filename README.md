@@ -1,6 +1,5 @@
 # 🥬 FreshAgent Alpha
 
----
 
 ![logo.png](figs/logo.png)
 
@@ -9,7 +8,7 @@ FreshAgent 是**电子科技大学旸谷青年科创中心“鲜”而易见团�
 
 FreshAgent 填补了国内的 LLM-based 农业智能体空缺，是**首个聚焦果蔬检测的智能体**。利用图像识别、光谱分析等技术进行果蔬新鲜度评估与分类，适用于零售、物流、食品安全等领域，帮助实现智能化的质量控制。
 
-FreshAgent Alpha是 FreshAgent 的基础模型，实现了基本的功能路由与函数调用。“鲜”而易见团队将模型开源，推动中国农业智能体的发展。
+FreshAgent Alpha是 FreshAgent 的基础模型，实现了基本的功能路由与函数调用。“鲜”而易见团队将模型向社区开源，力求以绵薄之力助力AI+农业发展。
 
 ![img.png](figs/img.png)
 
